@@ -1,13 +1,14 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python3.9
 
 import os
 import tarfile
 from six.moves import urllib
 import pandas as pd
 
-import matplotlib
+import matplotlib as mpl
 gui_env = ['GTK3Agg', 'GTK3Cairo', 'MacOSX', 'nbAgg', 'Qt4Agg', 'Qt4Cairo', 'Qt5Agg', 'Qt5Cairo', 'TkAgg', 'TkCairo', 'WebAgg', 'WX', 'WXAgg', 'WXCairo', 'agg', 'cairo', 'pdf', 'pgf', 'ps', 'svg', 'template'] #backends for Matplotlib
-matplotlib.use(gui_env[2]) #select MacOSX
+mpl.use(gui_env[2]) #select MacOSX
+
 import matplotlib.pyplot as plt
 
 DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"

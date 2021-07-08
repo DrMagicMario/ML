@@ -1,2 +1,2 @@
-# pyML
- learning ML using python
+# ML
+ learning ML 

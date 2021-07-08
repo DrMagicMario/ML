@@ -39,6 +39,7 @@ function load_data(housingpath=HOUSING_PATH)
 end
 
 #good Dataframe resource: https://syl1.gitbook.io/julia-language-a-concise-tutorial/useful-packages/dataframes
+#https://dataframes.juliadata.org/stable/lib/functions/
 housing = load_data()
 println("\nHEADER:\n", names(housing))
 println("\nDESCRIPTION:\n", describe(housing))

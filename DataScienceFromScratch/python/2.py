@@ -333,9 +333,64 @@ lazy_below20 = (i for i in lazy_range(20) if 1%2==0)
 ###################### Randomness #########################
 import random 
 def random_demo():
-	uniform = [random.random() for i in range(4)]
-	random.seed(10)
-	print uniform, random.random()
-	return 
-
+    uniform = [random.random() for i in range(4)]
+    shuffled = range(10)
+    random.shuffle(shuffled)
+    bf = random.choice(["alice","bob","charlie"])
+    winning_lotto = random.sample(range(60),6)
+    forrand = [random.choice(range(10)) for i in range(4)]
+    random.seed(10)
+    print uniform, random.random(), random.randrange(10), \
+    random.randrange(3,6), shuffled, bf, winning_lotto, forrand
+    return 
 #random_demo()
+
+
+############################### Regex ###################################
+print all([                                 
+    not regex.match("a", "cat"),            # 'cat' doesnt start with 'a' 
+    regex.search("a", "cat"),               # 'cat' has 'a' in it
+    not regex.search("c", "dog"),           # 'dog' doesnt have 'c' in it
+    3 == len(regex.split("[ab]", "carbs")), # split on a or b to [c,r,s]
+    "R-D-" == regex.sub("[0-9]", "-", "R2D2")# replace digits with dashes
+    ]) # prints True
+
+
+############################### OOP ###################################
+# by convention, we give classes PascalCase names
+class Set:
+       # these are the member functions
+       # every one takes a first parameter "self" (another convention)
+       # that refers to the particular Set object being used
+
+    def __init__(self, values=None):
+        """This is the constructor.
+        It gets called when you create a new Set.
+        You would use it like
+        s1 = Set() # empty set
+        s2 = Set([1,2,2,3]) # initialize with values"""
+        self.dict = {}  # each instance of Set has its own dict property 
+                        # which is what we'll use to track memberships
+        if values is not None: 
+            for value in values:
+                self.add(value)
+
+    def __repr__(self):
+        """this is the string representation of a Set object if you type it at the Python prompt or pass it to str()""" 
+        return "Set: " + str(self.dict.keys())
+          
+    #represent membership by being a key in self.dict with value True
+    def add(self, value): 
+        self.dict[value] = True
+          
+    # value is in the Set if it's a key in the dictionary
+    def contains(self, value): 
+        return value in self.dict
+    
+    def remove(self, value): 
+        del self.dict[value]
+
+s = Set([1,2,3])
+s.add(4)
+print s.contains(4) # True s.remove(3)
+print s.contains(3) # False

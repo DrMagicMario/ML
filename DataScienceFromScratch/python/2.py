@@ -394,3 +394,103 @@ s = Set([1,2,3])
 s.add(4)
 print s.contains(4) # True s.remove(3)
 print s.contains(3) # False
+
+
+########################## Functional Tools #############################
+
+#manual partial
+def exp(base, power): 
+    return base ** power
+
+def two_to_the(power):
+    return exp(2, power)
+
+#partial lib
+from functools import partial
+two_to_the = partial(exp, 2) # is now a function of one variable 
+square_of = partial(exp, power=2)
+print two_to_the(3), square_of(3) #8,9
+
+#reduce, map filter
+xs = [1, 2, 3, 4]
+def multiply(x,y): return x*y
+def is_even(x): return x%2==0
+def rmf_test(): 
+    twice_xs = [double(x) for x in xs] # [2, 4, 6, 8]
+    map_xs = map(double, xs) # same as above
+    list_doubler = partial(map, double) #function that doubles a list
+    partial_xs = list_doubler(xs) # again [2, 4, 6, 8]
+    products = map(multiply, [1,2], [4,5]) #map can do multiple args
+    x_evens = [x for x in xs if is_even(x)] # [2, 4]
+    filt_evens = filter(is_even, xs) # same as above
+    list_evener = partial(filter, is_even) #function that filters a list
+    partial_evens = list_evener(xs) # again [2, 4]
+    x_product = reduce(multiply, xs) # = 1 * 2 * 3 * 4 = 24
+    list_product = partial(reduce, multiply) #function that reduces a list
+    partial_product = list_product(xs) # again = 24
+    print twice_xs, map_xs, list_doubler, partial_xs, products, \
+            x_evens, filt_evens, list_evener, partial_evens, \
+            x_product, list_product, partial_product 
+    return
+#rmf_test()
+
+
+########################## enumerate #############################
+"""
+for i, document in enumerate(documents):
+    do_something(i, document)
+"""
+
+
+########################## Zip an Unpacking #############################
+# Zip: transforms lists into a single list of tuples of corresponding elements
+def zip_demo(): #zip stops as soon as the first list ends.
+    list1 = ['a', 'b', 'c']
+    list2 = [1, 2, 3]
+    list3 = zip(list1, list2) 
+    pairs = [('a', 1), ('b', 2), ('c', 3)]
+    letters, numbers = zip(*pairs) #unzip
+    unzip_raw = zip(('a', 1), ('b', 2), ('c', 3))
+    print list3, letters, numbers, unzip_raw 
+    return
+#zip_demo()
+
+#use argument unpacking anywhere!
+def myadd(x,y): return x+y
+print myadd(1,2), myadd(*[1,2])
+try:
+    myadd([1,2])
+except TypeError:
+    print "invalid arg type"
+
+
+########################## Args and kwargs #############################
+
+def doubler(f): 
+    def g(x):
+        return 2 * f(x) 
+    return g
+
+def f1(x): 
+    return x + 1
+
+#this wont work for an arbritrary number of arguments
+g = doubler(f1)
+print g(3) , g(-1)# 8 (== ( 3 + 1) * 2), 0 (== (-1 + 1) * 2)
+
+#via unpacking
+#args is a tuple of unnamed args; kwargs is a dict of named args
+def magic(*args, **kwargs):
+    print "unnamed args:", args 
+    print "keyword args:", kwargs
+    return 
+magic(1, 2, key="word", key2="word2")
+
+
+def other_way_magic(x, y, z): 
+    return x + y + z
+    
+x_y_list = [1, 2]
+z_dict = { "z" : 3 }
+print other_way_magic(*x_y_list, **z_dict) # 6
+

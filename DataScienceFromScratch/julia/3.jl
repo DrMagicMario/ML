@@ -52,5 +52,30 @@ end
 #histogram_test()
 
 
-########################################## Bar charts #########################################
+########################################## Line charts #########################################
+
+variance = [1, 2, 4, 8, 16, 32, 64, 128, 256]
+bias_squared = [256, 128, 64, 32, 16, 8, 4, 2, 1]
+
+function line_test()
+  total_error = [x+y for (x,y) in zip(variance,bias_squared)]
+  xs = [i for (i,n) in enumerate(variance)]
+  plot(xs,variance,l= :green, label = "variance")
+  plot!(xs,bias_squared ,l= :red, label = "bias^2")
+  plot!(xs,total_error ,l= :blue, label = "total error", show =true, xlabel ="model complexity", title="The Bias-Variance Tradeoff")
+end
+#line_test()
+
+
+######################################### Scatter plot ########################################
+friends = [ 70,  65,  72,  63,  71,  64,  60,  64,  67]
+minutes = [175, 170, 205, 120, 220, 130, 105, 145, 190]
+labels =  ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+
+function scatter_test()
+  scatter(friends, minutes, title="Daily Minutes vs. Number of Friends",
+          xlabel="# of friends", ylabel="daily minutes spent on the site",
+          show =true, series_annotations = text.(labels, :bottom))
+end
+scatter_test()
 readline() #wait for user input to exit

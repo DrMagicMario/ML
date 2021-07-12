@@ -5,7 +5,8 @@
   ---------
 
     *JuliaDocs: https://docs.julialang.org/en/v1/ 
-    *JUliaPlots: http://docs.juliaplots.org/latest/
+    *JuliaPlots: http://docs.juliaplots.org/latest/
+    *Visualizations: https://www.youtube.com/watch?v=WxEBII1_YWY
 =#
 
 

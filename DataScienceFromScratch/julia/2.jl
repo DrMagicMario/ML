@@ -33,3 +33,49 @@ using StatsBase: countmap as cp
 import StatsBase.countmap as cp #same as above
 @show cp
 
+using DataStructures
+lookup = DefaultDict(Int)
+mycounter = counter(Int) #DataStructures doesnt provide default constructor :(
+myregex = r"[0-9]+"
+println(lookup,mycounter,myregex)
+
+
+########################################## Functions ###########################################
+function double(x)
+  """docstring"""
+  return x*2
+end
+
+function applyfunc(f)
+  """calls function f with arg=1"""
+  return f(1)
+end
+
+mydouble = double
+x = applyfunc(mydouble) #passes 1 to double()
+println(x) #2
+
+#anon. funcs:
+y = applyfunc(x -> x+4)
+println(y) #5
+
+#=
+Optional arguments: Optional args passed from left to right of func def. 
+=#
+function myprint(msg1 = "default", msg2 = "message")
+  return msg1 * msg2
+end
+print(myprint()*"\n")
+print(myprint("hello")*"\n") #msg1 = hello
+
+#=
+keyword arguments:  Defined using a semicolon in the signature ';' 
+                    Optional args passed first, followed by Keyword args
+                    Keyword args Must be referred to by keyword
+=#
+function mysubtract(x=0, y=0; a=0, b=0)
+  return x-y,a-b 
+end
+println(mysubtract(10,5))   #(5,0)  -> x,y passed
+println(mysubtract(0,5))    #(-5,0) -> x,y passed
+println(mysubtract(5,b=5))  #(5,-5) -> x,b passed

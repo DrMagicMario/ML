@@ -79,3 +79,48 @@ end
 println(mysubtract(10,5))   #(5,0)  -> x,y passed
 println(mysubtract(0,5))    #(-5,0) -> x,y passed
 println(mysubtract(5,b=5))  #(5,-5) -> x,b passed
+
+
+########################################## Strings ###########################################
+#julia doesnt have single quotes
+myquote = "data science"
+
+tab = "\t"
+nottab = "\\t"
+println("$(length(tab)) $(length(nottab))")
+
+multiline = """this is the first line.
+this is the second line
+this is the last line
+"""
+println(multiline)
+
+
+######################################## Exceptions ###########################################
+try
+  print(sqrt(-1))
+catch e
+  println("can't sqrt a negative number")
+end
+
+
+########################################### Lists #############################################
+
+intlist = [1,2,3]
+heterolist = ["string", 0.1, true]
+listoflists= [intlist, heterolist, []]
+println("length intlist: $(length(intlist)), sum intlist: $(sum(intlist))")
+println(heterolist, listoflists) #Any["string", 0.1, true], Vector{Any}[[1, 2, 3], ["string", 0.1, true], []]
+
+#indexing
+function index_demo()
+  x = collect(0:9)
+  zero = x[1]
+  one = x[2]
+  nine = x[end]
+  eight = x[end-1]
+  x[1] = -1
+  println("zero=$zero, one = $one, nine=$nine, eight=$eight, x=$x")
+end
+
+index_demo()

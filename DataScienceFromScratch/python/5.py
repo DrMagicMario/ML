@@ -103,19 +103,40 @@ def sum_of_squares(v):
     """v_1 * v_1 + ... + v_n * v_n"""
     return dot(v, v)
 
+#measures how a single variable deviates from its mean
 def variance(x):
     """assumes x has at least two elements"""
     n = len(x)
     deviations = de_mean(x)
     return sum_of_squares(deviations)/(n-1)
 
-def std_deviation(x):
+def stddev(x): #standard deviation
     return math.sqrt(variance(x))
 
 #print "variance num of friends: %s" % variance(num_friends)
-#print "standard deviation num of friends: %s" % std_deviation(num_friends)
+#print "standard deviation num of friends: %s" % stddev(num_friends)
 
 #more robust approach to dealing with outliers -> use a quartile!
 def interquartile_range(x):
     return quantile(x, 0.75) - quantile(x, 0.25)
 #print "interquartile range from 25-75 percent: %s" % interquartile_range(num_friends)
+
+
+###################################### Correlation ####################################
+
+#measures how two variables vary in tandem from their means
+def covariance(x, y): 
+    n = len(x)
+    return dot(de_mean(x), de_mean(y)) / (n - 1) 
+#print "Covariance num of friends: %s" % covariance(num_friends, daily_minutes) # 22.43
+
+def correlation(x,y): #value always lies between -1 and 1
+    stddev_x = stddev(x)
+    stddev_y = stddev(y)
+    if stddev_x > 0 and stddev_y > 0:
+        return covariance(x,y)/stddev_x/stddev_y
+    else:
+        return 0 #no correlation
+#print "Correlation betwwen num of friends and daily minutes: %s" % correlation(num_friends, daily_minutes)
+
+

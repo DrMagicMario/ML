@@ -3,6 +3,7 @@
 from __future__ import division 
 from collections import Counter
 import random
+import math
 import matplotlib
 gui_env = ['pgf', 'Qt4Cairo', 'cairo', 'MacOSX', 'TkCairo', 'gdk', 'ps', 'GTKAgg', 'nbAgg', 'GTK', 'Qt5Agg', 'template', 'Qt5Cairo', 'WXCairo', 'GTK3Cairo', 'GTK3Agg', 'WX', 'Qt4Agg', 'TkAgg', 'agg', 'svg', 'GTKCairo', 'WXAgg', 'WebAgg', 'pdf']
 matplotlib.use(gui_env[18]) #TkAgg
@@ -78,7 +79,43 @@ def mode(x):
     counts = Counter(x)
     Max = max(counts.values())
     return[x for x, count in counts.iteritems() if count == Max]
-print "mode: %s" % mode(num_friends)
+#print "mode: %s" % mode(num_friends)
 
 
 #################################### Dispersion #####################################
+
+#Range:measures how spread data is: 0 = no spread (same values) 
+def dat_range(x):
+    return max(x) - min(x)
+#print "data range: %s" % dat_range(num_friends)
+
+#Variance
+def de_mean(x):
+    """ translate x by subtracting its mean (result has mean = 0)"""
+    xbar = mean(x)
+    return [xi - xbar for xi in x]
+
+def dot(v, w):
+    """v_1 * w_1 + ... + v_n * w_n"""
+    return sum(v_i * w_i for v_i, w_i in zip(v, w))
+
+def sum_of_squares(v):
+    """v_1 * v_1 + ... + v_n * v_n"""
+    return dot(v, v)
+
+def variance(x):
+    """assumes x has at least two elements"""
+    n = len(x)
+    deviations = de_mean(x)
+    return sum_of_squares(deviations)/(n-1)
+
+def std_deviation(x):
+    return math.sqrt(variance(x))
+
+#print "variance num of friends: %s" % variance(num_friends)
+#print "standard deviation num of friends: %s" % std_deviation(num_friends)
+
+#more robust approach to dealing with outliers -> use a quartile!
+def interquartile_range(x):
+    return quantile(x, 0.75) - quantile(x, 0.25)
+#print "interquartile range from 25-75 percent: %s" % interquartile_range(num_friends)

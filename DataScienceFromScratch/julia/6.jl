@@ -165,6 +165,35 @@ end
 
 
 ##################################### Central Limit Theorem ###################################
+#a random variable defined as the average of a large number of independent and identically distributed random variables is itself approximately normally distributed
+
+#binomial random variables
+function bernoulli_trial(p)
+  return  rand() < p ? 1 : 0
+end
+
+function binomial(n,p)
+  return sum(bernoulli_trial(p) for x in 1:n)
+end
+
+using StatsBase
+function make_hist(p,n,num_points)
+  data = [binomial(n,p) for x in 1:num_points]
+
+  #barchart
+  hist = countmap(data)
+  bar!([x-0.4 for x in keys(hist)],[v/num_points for v in values(hist)],show=true)
+  
+
+  mu = p*n
+  sigma = sqrt(n*p*(1-p))
+  #linechart
+  xs = min(data...):max(data...)+1
+  ys = [normal_cdf(x+0.5;mu,sigma)-normal_cdf(x-0.5;mu,sigma) for x in xs]
+  plot!(xs,ys,title="Binomial vs Normal Distribution", show=true)
+end
+
+make_hist(0.75,100,10000)
 
 
 readline()

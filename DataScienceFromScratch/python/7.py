@@ -87,3 +87,44 @@ type_2_probability = normal_probability_below(hi, mu_1, sigma_1)
 power = 1 - type_2_probability
 print power
 
+def two_sided_p_value(x, mu=0, sigma=1): 
+    if x >= mu:
+        # if x is greater than the mean, the tail is what's greater than x
+        return 2 * normal_probability_above(x, mu, sigma) 
+    else:
+        # if x is less than the mean, the tail is what's less than x
+        return 2 * normal_probability_below(x, mu, sigma)
+
+print(two_sided_p_value(529.5, mu_0, sigma_0)) # 0.062
+
+extreme_value_count = 0 
+for _ in range(100000):
+    num_heads = sum(1 if random.random() < 0.5 else 0 for _ in range(1000))
+    if num_heads >= 530 or num_heads <= 470: 
+        extreme_value_count += 1
+print extreme_value_count / 100000 # 0.062
+
+
+def run_experiment():
+    """flip a fair coin 1000 times, True = heads, False = tails""" 
+    return [random.random() < 0.5 for _ in range(1000)]
+
+def reject_fairness(experiment):
+    """using the 5% significance levels"""
+    num_heads = len([flip for flip in experiment if flip]) 
+    return num_heads < 469 or num_heads > 531
+
+random.seed(0)
+experiments = [run_experiment() for _ in range(1000)] 
+num_rejections = len([experiment for experiment in experiments if reject_fairness(experiment)])
+print num_rejections # 46
+
+def B(alpha, beta):
+    """a normalizing constant so that the total probability is 1"""
+    return math.gamma(alpha) * math.gamma(beta) / math.gamma(alpha + beta)
+
+def beta_pdf(x, alpha, beta):
+    if x < 0 or x > 1: # no weight outside of [0, 1]
+        return 0
+    return x ** (alpha - 1) * (1 - x) ** (beta - 1) / B(alpha, beta)
+

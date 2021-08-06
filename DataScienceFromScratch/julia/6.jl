@@ -137,7 +137,7 @@ function plot_cdf()
 end
 #plot_cdf()
 
-function inverse_normal_pdf(p;mu=0,sigma=1,tolerance=0.00001)
+function inverse_normal_cdf(p;mu=0,sigma=1,tolerance=0.00001)
   """find approximate inverse using binary search"""
 
   #if not standard, compute standard and rescale

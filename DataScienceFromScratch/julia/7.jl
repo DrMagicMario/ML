@@ -80,7 +80,6 @@ end
 
 ################################### testing hypotheses #######################################
 
-
 function test_hypotheses()
   mu0, sigma0 = normal_approx_to_binomial(1000,0.5) #50, 15.8
   @show mu0;@show sigma0
@@ -99,7 +98,7 @@ function test_hypotheses()
   power2 = 1 - below(high;mu=mu0,sigma=sigma0)
   @show high;@show power2
 end
-test_hypotheses()
+#test_hypotheses()
 
 function two_sided_test(x;mu=0,sigma=1)
   if x >= mu #tail is greater than x
@@ -109,4 +108,67 @@ function two_sided_test(x;mu=0,sigma=1)
   end
 end
 mu0, sigma0 = normal_approx_to_binomial(1000,0.5) #50, 15.8
-println("two sided test: $(two_sided_test(529.5;mu=mu0,sigma=sigma0))")
+#println("two sided test: $(two_sided_test(529.5;mu=mu0,sigma=sigma0))")
+
+
+#= ################################### Confidence Intervals ####################################
+
+  *Central limit theorem takes the average of Bernoulli variables
+    **approximately normal, with mean p and standard deviation: sqrt(p*(1-p)/1000)
+    
+=#
+
+
+#= ###################################### P-hacking  #########################################
+
+  *5% of the time erroneously reject the null hypothesis
+
+=#
+
+function run_exp()
+  """flip a fair coin 1000 times, True = head, False = tails"""
+  return [rand()<0.5 for i in 1:1000]
+end
+
+function reject_fair(experiment)
+  """Using 5% significance levels"""
+  num_heads = length([flip for flip in experiment if flip])
+  return num_heads<469 || num_heads>531
+end
+Random.seed!(0)
+experiments = [run_exp() for i in 1:1000]
+num_rejects = length([exp for exp in experiments if reject_fair(exp)])
+println("num rejects: $num_rejects")
+
+#= 
+  if you’re setting out to find “significant” results, you usually can. Test enough hypotheses against your data set, and one of them will almost certainly appear significant. Remove the right outliers, and you can probably get your p value below 0.05.
+
+=#
+
+
+#= ################################# Bayesian Inference #######################################
+
+  *treating the unknown parameters themselves as random variables
+    **Starts with a prior distribution
+    **Using observed data and Bayes’s Theorem to get an updated posterior distribution
+
+=#
+
+#Unknown Variable is a probability -> use Beta distribution
+function B(alpha, beta)
+  """a normalizing constant so that the total probability is 1"""
+  return gamma(alpha) * gamma(beta) / gamma(alpha + beta)
+end
+
+#alpha and beta are both 1: uniform distribution centered at 0.5; very dispersed
+#If alpha is much larger than beta, most of the weight is near 1
+#if alpha is much smaller than beta, most of the weight is near zero
+
+function beta_pdf(x, alpha, beta)
+  if x < 0 || x > 1 # no weight outside of [0, 1]
+    return 0
+  end
+  return x ^ (alpha - 1) * (1 - x) ^ (beta - 1) / B(alpha, beta)
+end
+
+

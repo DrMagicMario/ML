@@ -175,5 +175,17 @@ function correlation_matrix(data)
   return make_matrix(num_columns,num_columns, matrix_entry)
 end
 
+#= #######################################################################################
+  Cleaning and Munging 
+    *Real-world data is dirty. Often you’ll have to do some work on it before you can use it.
+        ** list of parsers, each specifying how to parse one of the columns.
+
+=# ######################################################################################
+
+function parse_row(inputrow, parsers)
+  """given a list of parsers apply approproate one to each element to inputrow"""
+  return [parser(value)]
+end
+
 print("im alive but im dead")
 readline()

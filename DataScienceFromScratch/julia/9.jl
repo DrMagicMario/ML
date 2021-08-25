@@ -4,6 +4,7 @@ using Pkg
 Pkg.activate("jenv")
 Pkg.instantiate()
 
+using DataStructures
 #=
     script that reads in lines of text and returns the ones that match a regular expression
         *use keyword 'ARGS' to access command line arguments
@@ -23,6 +24,18 @@ end
 #=
     The | is the pipe character, which means “use the output of the left command as the input of the right command.” You can build pretty elaborate data-processing pipelines this way.
 =#
+
+most_common(c::Accumulator) = most_common(c, length(c))
+most_common(c::Accumulator, k) = sort!(collect(c), by=kv->kv[2], rev=true)
+
+function most_common_word()
+  open("hamlet.txt") do f
+    words = collect(m.match for m in eachmatch(r"\w+", read(f, String)))
+    rankings = counter(words) |> most_common
+    println("top 10 most common words: $(rankings[1:10])")
+  end
+end
+most_common_word()
 
 #=
     Basics of text files

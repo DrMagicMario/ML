@@ -35,7 +35,7 @@ function most_common_word()
     println("top 10 most common words: $(rankings[1:10])")
   end
 end
-most_common_word()
+#most_common_word()
 
 #=
     Basics of text files
@@ -43,16 +43,43 @@ most_common_word()
 
 function text_files()
   #open only work if file exists
-  #read_file = open("read_file.txt","r")
-  #close(read_file)
-
+  read_file = open("hamlet.txt","r")
   write_file = open("write_file.txt","w")
   append_file = open("append_file.txt","a")
   println("files: $write_file, $append_file")
   close(write_file)
   close(append_file)
+  close(read_file)
 end
 #text_files()
+
+#use files in a do or with block so the file is automatically closed 
+function file_handling()
+  data = open("hamlet.txt", "r") do io
+    ##all of the implemenations below work
+
+    #1
+    #=
+    while !eof(io)
+      x = readline(io)
+      println("$x")
+    end
+    =#
+
+    #2
+    for line in eachline(io)
+      println("$line")
+    end
+
+
+    #3
+    #=
+    read(io, String)
+    println("$data")
+    =#
+  end
+end
+file_handling()
 
 #use libraries like DataFrames.jl to process data. way easier and provides other functionalities
 
@@ -70,7 +97,7 @@ function webscrapeEx()
   head, body = r_parsed.root[1], r_parsed.root[2]
   println("Head: $head\nBody: $body")
 end
-webscrapeEx()
+#webscrapeEx()
 
 
 

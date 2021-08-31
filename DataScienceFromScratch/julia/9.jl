@@ -79,9 +79,16 @@ function file_handling()
     =#
   end
 end
-file_handling()
+#file_handling()
 
+#Delimited Files
 #use libraries like DataFrames.jl to process data. way easier and provides other functionalities
+using CSV, DataFrames
+
+function delim_files()
+  df = DataFrame(CSV.File("stockprices.txt"))
+end
+delim_files()
 
 #=
     Scraping the Web

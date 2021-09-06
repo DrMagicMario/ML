@@ -87,6 +87,8 @@ using CSV, DataFrames
 
 function delim_files()
   df = DataFrame(CSV.File("stockprices.txt"))
+  stocks = copy.(eachrow(df))
+  println("$(eachrow(df))\n\n$stocks")
 end
 delim_files()
 

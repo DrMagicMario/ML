@@ -83,12 +83,28 @@ end
 
 #Delimited Files
 #use libraries like DataFrames.jl to process data. way easier and provides other functionalities
-using CSV, DataFrames
+using CSV, DataFrames, DelimitedFiles
 
 function delim_files()
+  #tab delimited
   df = DataFrame(CSV.File("stockprices.txt"))
   stocks = copy.(eachrow(df))
-  println("$(eachrow(df))\n\n$stocks")
+  for row in stocks
+    date = row[1]
+    symbol = row[2]
+    price = row[3]
+    println("date: $date  symbol: $symbol price: $price")
+  end
+
+  #headers
+  dataframe = DataFrame(CSV.File("stockprices_headers.txt"))
+  stonks = copy.(eachrow(dataframe))
+  for row in stonks
+    date = row["date"]
+    symbol = row["symbol"]
+    price = row["closing_price"]
+    println("date: $date  symbol: $symbol price: $price")
+  end
 end
 delim_files()
 

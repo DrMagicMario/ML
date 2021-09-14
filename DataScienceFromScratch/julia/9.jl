@@ -83,7 +83,7 @@ end
 
 #Delimited Files
 #use libraries like DataFrames.jl to process data. way easier and provides other functionalities
-using CSV, DataFrames, DelimitedFiles
+using CSV, DataFrames
 
 function delim_files()
   #tab delimited
@@ -95,18 +95,22 @@ function delim_files()
     price = row[3]
     println("date: $date  symbol: $symbol price: $price")
   end
-
+  println("")
   #headers
   dataframe = DataFrame(CSV.File("stockprices_headers.txt"))
   stonks = copy.(eachrow(dataframe))
   for row in stonks
-    date = row["date"]
-    symbol = row["symbol"]
-    price = row["closing_price"]
+    date = row[:date]
+    symbol = row[:symbol]
+    price = row[:closing_price]
     println("date: $date  symbol: $symbol price: $price")
   end
 end
-delim_files()
+#delim_files()
+
+#writing delimited data
+function write_delim()
+end
 
 #=
     Scraping the Web

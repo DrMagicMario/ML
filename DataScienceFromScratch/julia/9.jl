@@ -83,7 +83,7 @@ end
 
 #Delimited Files
 #use libraries like DataFrames.jl to process data. way easier and provides other functionalities
-using CSV, DataFrames
+using CSV, DataFrames, DelimitedFiles
 
 function delim_files()
   #tab delimited
@@ -110,7 +110,16 @@ end
 
 #writing delimited data
 function write_delim()
+  prices = Dict("AAPL" => 90.91, "MSFT" => 41.68, "FB" => 64.5) 
+
+  #convert Dict to dataframe
+  df = DataFrame(ticker=String[], price=Float32[])
+  for (key,value) in prices
+    push!(df, (key, value))
+  end
+  CSV.write("comma_delim_prices.txt", df, delim =',')
 end
+write_delim()
 
 #=
     Scraping the Web
